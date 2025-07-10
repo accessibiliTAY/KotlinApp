@@ -46,22 +46,28 @@ fun GreetingPreview() {
     }
 }
 
-private fun printGreeting() = println("Hello Kotlin")
-fun printCalculatedValue(value1: Int, value2: Int, calculator: (Int, Int) -> Int) {
-    println("The value is: ${calculator(value1, value2)}")
-}
-fun main() {
-    fun getGreeting(
-        greeting: String = "Hello",
-        thingToGreet: String = "World"
-    ) = "$greeting $thingToGreet"
+// write a function that satisfies the following requirements
 
-    println(getGreeting(thingToGreet = "World", greeting = "Hey there"))
-    printCalculatedValue(2, 2) { value1, value2 ->
-        value1 + value2
+// function takes 2 strings for first and last name
+// function takes a formatting function parameter
+// function should print the result of the passed format function
+
+fun printFormattedName(firstName: String, lastName: String, nameConcat: (String, String) -> String) {
+    println(nameConcat(firstName, lastName))
+}
+val basicFormatter: (String, String) -> String = { firstName, lastName ->
+    "$firstName $lastName"
+}
+
+val fancyFormatter: (String, String) -> String = { firstName, lastName ->
+    "first name is $firstName and last name is $lastName"
+}
+
+fun main() {
+    printFormattedName (firstName = "Tay", lastName = "Marier", basicFormatter)
+    printFormattedName (firstName = "Tay", lastName = "Marier", fancyFormatter)
+    printFormattedName (firstName = "Tay", lastName = "Marier") { firstName, lastName ->
+        "My name is $firstName $lastName"
     }
 
-    printCalculatedValue(2, 2, { value1, value2 ->
-        value1 - value2
-    })
 }
