@@ -46,86 +46,22 @@ fun GreetingPreview() {
     }
 }
 
-fun main(args: Array<String>) {
-    println("Hello World!")
-    var ourFirstVariable = true
+private fun printGreeting() = println("Hello Kotlin")
+fun printCalculatedValue(value1: Int, value2: Int, calculator: (Int, Int) -> Int) {
+    println("The value is: ${calculator(value1, value2)}")
+}
+fun main() {
+    fun getGreeting(
+        greeting: String = "Hello",
+        thingToGreet: String = "World"
+    ) = "$greeting $thingToGreet"
 
-    println(ourFirstVariable)
+    println(getGreeting(thingToGreet = "World", greeting = "Hey there"))
+    printCalculatedValue(2, 2) { value1, value2 ->
+        value1 + value2
+    }
 
-    ourFirstVariable = false
-    println(ourFirstVariable)
-
-    println(ourFirstVariable == true)
-    println(ourFirstVariable == false)
-
-    val aInt: Int = 0
-    val anotherInt = 0
-
-    val aByte: Byte = 0
-    val aShort: Short = 0
-
-    val aLong: Long = 0
-    val inferredInt = 10
-    val inferredLong = 10000000000
-
-    val anotherLong = 10L
-
-    val unsignedInt: UInt = 0U
-    val unsignedLong = 0UL
-
-    val aDouble: Double = 5.5
-    val aFloat: Float = 5.5f
-
-    val inferredDouble = 5.5
-    val inferredFloat = 5.5f
-
-    println(5 == 4)
-    println(10f > 1)
-    println(10.1 <= 5.2)
-
-    println(10.5.toInt())
-    10.9.toFloat()
-    5.toULong()
-
-    println(100_000_000.toByte())
-    val aChar: Char = 'a'
-    val aNumericChar = '1'
-    val newLineChar = '\n'
-
-    //val concatOption1 = 'a' + 'b'
-
-    //val concatOption2 = 'ab'
-
-    val aString: String = "Hello Kotlin!"
-    val escaped = "Hello \n World"
-    println(escaped)
-
-    val raw = """
-      >>Some
-        multiline
-     text
-      >>is going on
-       here   
-    """.trimMargin(">>")
-    println(raw)
-
-    val concatString = "Hello" + " Kotlin!"
-
-    val concatNumber = "The number " + 10
-    println(concatNumber)
-
-
-    val aNumber = 10
-    val concatTemplate = "The number ${1 + aNumber}"
-    println(concatTemplate)
-
-
-    val someString = "  "
-    println(someString.isNotBlank())
-
-    val anotherString = "Hello Kotlin World!"
-    anotherString.contains("Kotlin")
-
-    var aNullableString: String? = "Kotlin"
-    println(aNullableString?.length ?: "the value was null")
+    printCalculatedValue(2, 2, { value1, value2 ->
+        value1 - value2
+    })
 }
