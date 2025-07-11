@@ -52,39 +52,49 @@ fun GreetingPreview() {
 }
 
 
-fun main1(vararg args: String) {
+// Prompt the user to enter the name of the test scores file
+// Read each line from the file
+// Sort the scores from highest to lowest
+// Pick the 3 highest scores
+// Write those 3 userId/score pairs to a new file sorted.txt
 
-    if (args.isEmpty()) {
-        print("Please pass at least one argument")
-        return
-    }
+@RequiresApi(Build.VERSION_CODES.O)
+fun main() {
 
-    println("First arg is ${args[0]}")
-
-    for (arg in args) println(arg)
-}
-
-fun main2() {
+    // enter file name
     print("Enter a filename: ")
     val filename = readLine() ?: ""
-    println("You entered: $filename")
 
+
+    // make sure file name is valid
     val isValidFile = File(filename).isFile
     if (isValidFile) {
         println("It is a valid file")
     } else {
         println("It is not a valid file")
     }
-}
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun main() {
+    // Read each line from file
     val scoresFile = File("scores.txt")
-
     scoresFile.forEachLine { line -> println(line) }
+    val rawScores = scoresFile.readLines()
 
-    val sortedLines = scoresFile.readLines().sorted()
+    // sort scores from highest to lowest
+    val sortedLines = rawScores.map { line -> //turning scores into a map
+        val elements = line.split(":") // telling code where to split elements
+        elements[0] to elements[1]  // mapping key value pairs
+    }
 
-    val outputFile = File("sorted-scores.txt").toPath()
-    outputFile.writeLines(sortedLines)
+
+    // pick 3 highest scores
+    val highScores = sortedLines
+        .sortedByDescending { pair -> pair.second } //sorting the highest scores to top of list
+        .take(n = 3) // taking first three
+
+    //write scores to new file
+    val outputFile = File("sorted.txt").toPath() // making new file
+    val outputScores = highScores.map{ // turning highscores into a map called output scores
+        "${it.first}:${it.second}" // converting it to strings in the original file format
+    }
+    outputFile.writeLines(outputScores) // writing he lines to the file
 }
