@@ -1,9 +1,11 @@
 package com.example.myapplication
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -12,6 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.myapplication.ui.theme.MyApplicationTheme
+
+import java.io.File
+import kotlin.io.path.writeLines
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,32 +52,39 @@ fun GreetingPreview() {
 }
 
 
+fun main1(vararg args: String) {
+
+    if (args.isEmpty()) {
+        print("Please pass at least one argument")
+        return
+    }
+
+    println("First arg is ${args[0]}")
+
+    for (arg in args) println(arg)
+}
+
+fun main2() {
+    print("Enter a filename: ")
+    val filename = readLine() ?: ""
+    println("You entered: $filename")
+
+    val isValidFile = File(filename).isFile
+    if (isValidFile) {
+        println("It is a valid file")
+    } else {
+        println("It is not a valid file")
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 fun main() {
+    val scoresFile = File("scores.txt")
 
-    val testScores = mapOf(
-        "123abc" to 88.1,
-        "124xyz" to 88.9,
-        "345abc" to 82.1,
-        "345bbc" to 72.1,
-        "34efbc" to 66.1,
-        "345abc" to 89.1,
-        "385agc" to 62.1,
-        "837abc" to 85.7,
-        "9459bc" to 94.3,
-        "nd2192" to 83.8,
-    )
+    scoresFile.forEachLine { line -> println(line) }
 
-    // Using the provided test scores, identify the 3 students
-    // with the lowest test scores
-    testScores.toList()
-        .sortedBy { pair -> pair.second }
-        .map { pair -> pair.first }
-        .take(n = 3)
-    .forEach { println(it) }
+    val sortedLines = scoresFile.readLines().sorted()
 
-    testScores.filter { it.value <= 75 }
-        .map { it.key }
-        .sorted()
-        .forEach { println(it) }
-
+    val outputFile = File("sorted-scores.txt").toPath()
+    outputFile.writeLines(sortedLines)
 }
